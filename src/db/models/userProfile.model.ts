@@ -1,6 +1,7 @@
-import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute} from 'sequelize';
 
 import sequelize from './sequelize';
+import User from './user.model';
 
 class UserProfile extends Model<InferAttributes<UserProfile>, InferCreationAttributes<UserProfile>> {
     declare userId: number;
@@ -10,6 +11,8 @@ class UserProfile extends Model<InferAttributes<UserProfile>, InferCreationAttri
     declare currentCtc: number | null;
     declare resumeUrl: string | null;
     declare linkedinUrl: string;
+
+    declare user?: NonAttribute<User>;
 }
 
 UserProfile.init({
@@ -17,6 +20,11 @@ UserProfile.init({
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         allowNull: false,
+        references: {
+            model: User,
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
     },
 
     bio: {
@@ -53,6 +61,11 @@ UserProfile.init({
     sequelize,
     underscored: true,
     timestamps: false
+});
+
+UserProfile.belongsTo(User, {
+    foreignKey: 'userId',
+    as: 'user'
 });
 
 export default UserProfile;

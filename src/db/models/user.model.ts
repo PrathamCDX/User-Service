@@ -1,6 +1,7 @@
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
 
 import sequelize from './sequelize';
+import UserProfile from './userProfile.model';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>;
@@ -11,6 +12,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
     declare deletedAt: CreationOptional<Date | null>;
+
+    declare profile?: NonAttribute<UserProfile>;
 }
 
 User.init({
@@ -60,6 +63,12 @@ User.init({
     sequelize,
     underscored: true,
     timestamps: true
+});
+
+User.hasOne(UserProfile, {
+    foreignKey: 'userId',
+    as: 'profile',
+    onDelete: 'CASCADE',
 });
 
 export default User;
