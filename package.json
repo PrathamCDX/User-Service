@@ -1,5 +1,5 @@
 {
-  "name": "express-typescript-starter",
+  "name": "workr-user-service",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
