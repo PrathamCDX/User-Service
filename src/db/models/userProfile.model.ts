@@ -1,10 +1,10 @@
-import { DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute} from 'sequelize';
+import { DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model, NonAttribute} from 'sequelize';
 
 import sequelize from './sequelize';
 import User from './user.model';
 
 class UserProfile extends Model<InferAttributes<UserProfile>, InferCreationAttributes<UserProfile>> {
-    declare userId: number;
+    declare userId: ForeignKey<User['id']>;
     declare bio: string | null;
     declare yearsOfExperience: number | null;
     declare isFresher: boolean | null;
