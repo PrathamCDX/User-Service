@@ -1,7 +1,9 @@
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
+import { BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
 
+import Role from './role.model';
 import sequelize from './sequelize';
 import UserProfile from './userProfile.model';
+import UserRole from './userRole.model';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>;
@@ -14,6 +16,9 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare deletedAt: CreationOptional<Date | null>;
 
     declare profile?: NonAttribute<UserProfile>;
+    declare roles?: NonAttribute<Role[]>;
+
+    declare getRoles: BelongsToManyGetAssociationsMixin<Role>;
 }
 
 User.init({
@@ -69,6 +74,13 @@ User.hasOne(UserProfile, {
     foreignKey: 'userId',
     as: 'profile',
     onDelete: 'CASCADE',
+});
+
+User.belongsToMany(Role, {
+    through: UserRole,
+    foreignKey: 'userId',
+    otherKey: 'roleId',
+    as: 'roles'
 });
 
 export default User;
