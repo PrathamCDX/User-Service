@@ -2,8 +2,10 @@ import { BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, InferAt
 
 import Role from './role.model';
 import sequelize from './sequelize';
+import Skill from './skill.model';
 import UserProfile from './userProfile.model';
 import UserRole from './userRole.model';
+import UserSkill from './userSkill.model';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>;
@@ -17,8 +19,10 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 
     declare profile?: NonAttribute<UserProfile>;
     declare roles?: NonAttribute<Role[]>;
+    declare skills?: NonAttribute<Skill[]>;
 
     declare getRoles: BelongsToManyGetAssociationsMixin<Role>;
+    declare getSkills: BelongsToManyGetAssociationsMixin<Skill>;
 }
 
 User.init({
@@ -81,6 +85,13 @@ User.belongsToMany(Role, {
     foreignKey: 'userId',
     otherKey: 'roleId',
     as: 'roles'
+});
+
+User.belongsToMany(Skill, {
+    through: UserSkill,
+    foreignKey: 'userId',
+    otherKey: 'skillId',
+    as: 'skills'
 });
 
 export default User;
