@@ -1,3 +1,5 @@
+import './db/models/associations';
+
 import express from 'express';
 
 import logger from './configs/logger.config';
@@ -8,7 +10,6 @@ import { appErrorHandler, genericErrorHandler } from './middlewares/error.middle
 import apiRouter from './routes';
 
 const app = express();
-
 
 app.use(express.json());
 

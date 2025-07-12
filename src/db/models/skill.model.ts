@@ -1,8 +1,8 @@
-import { BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
+import { Association, BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
 
 import sequelize from './sequelize';
 import User from './user.model';
-import UserSkill from './userSkill.model';
+// import UserSkill from './userSkill.model';
 
 class Skill extends Model<InferAttributes<Skill>, InferCreationAttributes<Skill>> {
     declare id: CreationOptional<number>;
@@ -13,6 +13,10 @@ class Skill extends Model<InferAttributes<Skill>, InferCreationAttributes<Skill>
     declare users?: NonAttribute<User[]>;
 
     declare getUsers: BelongsToManyGetAssociationsMixin<User>;
+
+    static associations: {
+        users: Association<Skill, User>
+    };
 }
 
 Skill.init({
@@ -44,13 +48,6 @@ Skill.init({
     sequelize,
     underscored: true,
     timestamps: false
-});
-
-Skill.belongsToMany(User, {
-    through: UserSkill,
-    foreignKey: 'skillId',
-    otherKey: 'userId',
-    as: 'users'
 });
 
 export default Skill;

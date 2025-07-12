@@ -1,11 +1,11 @@
-import { BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
+import { Association, BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
 
 import Role from './role.model';
 import sequelize from './sequelize';
 import Skill from './skill.model';
 import UserProfile from './userProfile.model';
-import UserRole from './userRole.model';
-import UserSkill from './userSkill.model';
+// import UserRole from './userRole.model';
+// import UserSkill from './userSkill.model';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>;
@@ -23,6 +23,12 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 
     declare getRoles: BelongsToManyGetAssociationsMixin<Role>;
     declare getSkills: BelongsToManyGetAssociationsMixin<Skill>;
+
+    static associations: {
+        profile: Association<User, UserProfile>;
+        roles: Association<User, Role>;
+        skills: Association<User, Skill>
+    };
 }
 
 User.init({
@@ -72,26 +78,6 @@ User.init({
     sequelize,
     underscored: true,
     timestamps: true
-});
-
-User.hasOne(UserProfile, {
-    foreignKey: 'userId',
-    as: 'profile',
-    onDelete: 'CASCADE',
-});
-
-User.belongsToMany(Role, {
-    through: UserRole,
-    foreignKey: 'userId',
-    otherKey: 'roleId',
-    as: 'roles'
-});
-
-User.belongsToMany(Skill, {
-    through: UserSkill,
-    foreignKey: 'userId',
-    otherKey: 'skillId',
-    as: 'skills'
 });
 
 export default User;

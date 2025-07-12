@@ -1,4 +1,4 @@
-import { DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model, NonAttribute} from 'sequelize';
+import { Association, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model, NonAttribute} from 'sequelize';
 
 import sequelize from './sequelize';
 import User from './user.model';
@@ -13,6 +13,10 @@ class UserProfile extends Model<InferAttributes<UserProfile>, InferCreationAttri
     declare linkedinUrl: string;
 
     declare user?: NonAttribute<User>;
+
+    static associations: { 
+        user: Association<UserProfile, User>
+    };
 }
 
 UserProfile.init({
@@ -61,11 +65,6 @@ UserProfile.init({
     sequelize,
     underscored: true,
     timestamps: false
-});
-
-UserProfile.belongsTo(User, {
-    foreignKey: 'userId',
-    as: 'user'
 });
 
 export default UserProfile;

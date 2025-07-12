@@ -1,8 +1,8 @@
-import { BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
+import { Association, BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
 
 import sequelize from './sequelize';
 import User from './user.model';
-import UserRole from './userRole.model';
+// import UserRole from './userRole.model';
 
 class Role extends Model<InferAttributes<Role>, InferCreationAttributes<Role>> {
     declare id: CreationOptional<number>;
@@ -14,6 +14,10 @@ class Role extends Model<InferAttributes<Role>, InferCreationAttributes<Role>> {
     declare users?: NonAttribute<User[]>;
 
     declare getUsers: BelongsToManyGetAssociationsMixin<User>;
+
+    static associations: {
+        users: Association<Role, User>;
+    };
 }
 
 Role.init({
@@ -48,13 +52,6 @@ Role.init({
     sequelize,
     underscored: true,
     timestamps: true
-});
-
-Role.belongsToMany(User, {
-    through: UserRole,
-    foreignKey: 'roleId',
-    otherKey: 'userId',
-    as: 'users'
 });
 
 export default Role;
