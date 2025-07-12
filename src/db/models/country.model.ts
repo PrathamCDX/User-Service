@@ -1,10 +1,17 @@
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import { Association, CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
 
 import sequelize from './sequelize';
+import State from './state.model';
 
 class Country extends Model<InferAttributes<Country>, InferCreationAttributes<Country>> {
     declare id: CreationOptional<number>;
     declare name: string;
+
+    declare states?: NonAttribute<State[]>;
+
+    static associations: {
+        states: Association<Country, State>
+    };
 }
 
 Country.init({

@@ -1,5 +1,7 @@
+import Country from './country.model';
 import Role from './role.model';
 import Skill from './skill.model';
+import State from './state.model';
 import User from './user.model';
 import UserProfile from './userProfile.model';
 import UserRole from './userRole.model';
@@ -42,4 +44,16 @@ Skill.belongsToMany(User, {
     foreignKey: 'skillId',
     otherKey: 'userId',
     as: 'users'
+});
+
+Country.hasMany(State, {
+    foreignKey: 'countryId',
+    as: 'states',
+});
+
+State.belongsTo(Country, {
+    foreignKey: 'countryId',
+    as: 'country',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
 });
