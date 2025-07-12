@@ -1,3 +1,4 @@
+import City from './city.model';
 import Country from './country.model';
 import Role from './role.model';
 import Skill from './skill.model';
@@ -54,6 +55,18 @@ Country.hasMany(State, {
 State.belongsTo(Country, {
     foreignKey: 'countryId',
     as: 'country',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+
+State.hasMany(City, {
+    foreignKey: 'stateId',
+    as: 'cities'
+});
+
+City.belongsTo(State, {
+    foreignKey: 'stateId',
+    as: 'state',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });

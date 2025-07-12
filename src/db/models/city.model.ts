@@ -1,28 +1,25 @@
 import { Association, CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
 
-import City from './city.model';
-import Country from './country.model';
 import sequelize from './sequelize';
+import State from './state.model';
 
-class State extends Model<InferAttributes<State>, InferCreationAttributes<State>> {
+class City extends Model<InferAttributes<City>, InferCreationAttributes<City>> {
     declare id: CreationOptional<number>;
     declare name: string;
-    declare countryId: ForeignKey<Country['id']>;
+    declare stateId: ForeignKey<State['id']>;
 
-    declare country?: NonAttribute<Country>;
-    declare cities?: NonAttribute<City[]>;
+    declare state?: NonAttribute<State>;
 
     static associations: {
-        country: Association<State, Country>
-        cities: Association<State, City>
+        state: Association<City, State>
     };
 }
 
-State.init({
+City.init({
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
     },
 
     name: {
@@ -30,21 +27,21 @@ State.init({
         allowNull: false,
     },
 
-    countryId: {
+    stateId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-            model: Country,
-            key: 'id' 
+            model: State,
+            key: 'id'
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
     }
 }, {
-    tableName: 'states',
+    tableName: 'cities',
     sequelize,
     timestamps: false,
     underscored: true
 });
 
-export default State;
+export default City;
