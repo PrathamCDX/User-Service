@@ -2,6 +2,7 @@ import { Association, CreationOptional, DataTypes, ForeignKey, InferAttributes, 
 
 import sequelize from './sequelize';
 import State from './state.model';
+import UserProfile from './userProfile.model';
 
 class City extends Model<InferAttributes<City>, InferCreationAttributes<City>> {
     declare id: CreationOptional<number>;
@@ -9,9 +10,11 @@ class City extends Model<InferAttributes<City>, InferCreationAttributes<City>> {
     declare stateId: ForeignKey<State['id']>;
 
     declare state?: NonAttribute<State>;
+    declare residents?: NonAttribute<UserProfile[]>;
 
     static associations: {
         state: Association<City, State>
+        residents: Association<City, UserProfile>
     };
 }
 

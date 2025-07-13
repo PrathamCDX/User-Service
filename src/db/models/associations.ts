@@ -70,3 +70,15 @@ City.belongsTo(State, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
+
+City.hasMany(UserProfile, {
+    foreignKey: 'currentLocationId',
+    as: 'residents'
+});
+
+UserProfile.belongsTo(City, {
+    foreignKey: 'currentLocationId',
+    as: 'currentLocation',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
