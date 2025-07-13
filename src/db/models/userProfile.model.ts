@@ -12,6 +12,7 @@ class UserProfile extends Model<InferAttributes<UserProfile>, InferCreationAttri
     declare currentCtc: CreationOptional<number | null>;
     declare resumeUrl: CreationOptional<string | null>;
     declare linkedinUrl: CreationOptional<string | null>;
+    declare currentCompanyId: CreationOptional<number | null>;
     declare currentLocationId: CreationOptional<ForeignKey<City['id'] | null>>;
 
     declare user?: NonAttribute<User>;
@@ -74,6 +75,11 @@ UserProfile.init({
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
+    },
+
+    currentCompanyId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true
     }
 }, {
     tableName: 'user_profiles',
