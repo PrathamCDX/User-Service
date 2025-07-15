@@ -2,6 +2,9 @@ import dotenv from 'dotenv';
 
 type ServerConfig = {
     PORT: number
+    SALT :number
+    JWT_SECRET : string
+    JWT_EXPRIRES_IN : string
 }
 
 type DBConfig = {
@@ -14,7 +17,10 @@ type DBConfig = {
 dotenv.config();
 
 export const serverConfig: ServerConfig =  {
-    PORT: Number(process.env.PORT) || 3000
+    PORT: Number(process.env.PORT) || 3000,
+    SALT : Number(process.env.SALT),
+    JWT_SECRET : String(process.env.JWT_SECRET),
+    JWT_EXPRIRES_IN : String(process.env.JWT_EXPRIRES_IN)
 };
 
 export const dbConfig: DBConfig = {

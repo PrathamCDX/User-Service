@@ -1,5 +1,6 @@
 import { Association, BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
 
+import { hashPassword } from '../../utils/auth/auth';
 import Role from './role.model';
 import sequelize from './sequelize';
 import Skill from './skill.model';
@@ -74,6 +75,12 @@ User.init({
         defaultValue: null
     },
 }, {
+    hooks:{
+        beforeSave :async (user: User) => {
+            if (user.changed('password')) {
+                user.password = await hashPassword(user.password);
+            }}
+    },
     tableName: 'users',
     sequelize,
     underscored: true,

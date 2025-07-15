@@ -1,13 +1,44 @@
 import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
-import { NotImplementedError } from '../utils/errors/app.error';
+import { LoginUserDto, RegisterUserDto } from '../dtos/user.dto';
+import UserRepository from '../repository/user.repository';
+import UserProfileRepository from '../repository/userProfile.repository';
+import UserService from '../services/user.service';
+const userRepository = new UserRepository();
+const userProfileRepository = new UserProfileRepository();
 
-async function registerHandler(_req: Request, _res: Response, _next: NextFunction) {
-    throw new NotImplementedError('Registration Controller is yet to implement');
+const userService = new UserService(userRepository, userProfileRepository);
+
+async function registerHandler(req: Request, res: Response, next: NextFunction) {
+
+    try {
+        const requestBody: RegisterUserDto = req.body;
+        const response = await userService.createService(requestBody);
+        res.status(StatusCodes.CREATED).json({
+            success: true,
+            message: 'User Creeated Successfully',
+            data : response,
+            error: {}
+        });
+    } catch (error) {
+        next(error);
+    }
 }
+async function loginHandler(req: Request, res: Response, next: NextFunction) {
+    try{
+        const requestBody: LoginUserDto = req.body ;
+        const response = await userService.loginService(requestBody);
+        res.status(StatusCodes.ACCEPTED).json({
+            success : true ,
+            message : 'Login successfull' ,
+            data : response ,
+            error : {}
 
-async function loginHandler(_req: Request, _res: Response, _next: NextFunction) {
-    throw new NotImplementedError('Login Controller is yet to implement');
+        });
+    }catch(error){
+        next(error);
+    }
 }
 
 export default {
