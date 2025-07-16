@@ -7,6 +7,13 @@ type ServerConfig = {
     JWT_EXPRIRES_IN : string
 }
 
+type AwsConfig = {
+    AWS_REGION: string
+    AWS_SECRET_ACCESS_KEY: string
+    AWS_ACCESS_KEY_ID: string
+    AWS_S3_BUCKET_NAME: string
+}
+
 type DBConfig = {
     DB_HOST: string
     DB_USER: string
@@ -28,4 +35,11 @@ export const dbConfig: DBConfig = {
     DB_USER: process.env.DB_USER || 'root',
     DB_PASSWORD: process.env.DB_PASSWORD || 'root',
     DB_NAME: process.env.DB_NAME || 'test_db'
+};
+
+export const awsConfig: AwsConfig = {
+    AWS_REGION: String(process.env.AWS_REGION),
+    AWS_ACCESS_KEY_ID: String(process.env.AWS_ACCESS_KEY_ID),
+    AWS_SECRET_ACCESS_KEY: String(process.env.AWS_SECRET_ACCESS_KEY),
+    AWS_S3_BUCKET_NAME: String(process.env.AWS_S3_BUCKET_NAME)
 };
