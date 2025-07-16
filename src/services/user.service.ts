@@ -1,10 +1,12 @@
+import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
+
 import logger from '../configs/logger.config';
 import sequelize from '../db/models/sequelize';
 import { LoginUserDto, RegisterUserDto } from '../dtos/user.dto';
 import UserRepository from '../repository/user.repository';
 import UserProfileRepository from '../repository/userProfile.repository';
-import { checkPassword, createToken } from '../utils/auth/auth';
-import { BadRequestError, InternalServerError, NotFoundError } from '../utils/errors/app.error';
+import { checkPassword, createToken, verifyToken } from '../utils/auth/auth';
+import { BadRequestError, InternalServerError, NotFoundError, UnauthorizedError } from '../utils/errors/app.error';
 
 
 class UserService {
@@ -66,7 +68,21 @@ class UserService {
 
     async deleteById() {}
 
-    isAuthenticated() {}
+    isAuthenticated(authToken: string){
+        try {
+            const decoded = verifyToken(authToken as string);
+            return decoded;
+            
+        } catch (error) {
+            if (error instanceof TokenExpiredError) {
+                return new UnauthorizedError('Session expired. Please login again.');
+            } else if (error instanceof JsonWebTokenError) {
+                throw new UnauthorizedError('Invalid token');
+            } else {
+                throw new UnauthorizedError('Verification of token failed');
+            }
+      
+        }
+    }
 }
-
 export default UserService;
