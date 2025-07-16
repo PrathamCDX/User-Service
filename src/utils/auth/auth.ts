@@ -11,10 +11,7 @@ const {SALT,JWT_SECRET } = serverConfig;
 // from env variables
 
 
-export const checkPassword = async (
-    password: string,
-    hashedPassword: string
-): Promise<boolean> => {
+export const checkPassword = async (password: string, hashedPassword: string): Promise<boolean> => {
     try {
         const isMatch = await bcrypt.compare(password, hashedPassword);
         return isMatch;

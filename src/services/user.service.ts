@@ -4,12 +4,10 @@ import { LoginUserDto, RegisterUserDto } from '../dtos/user.dto';
 import UserRepository from '../repository/user.repository';
 import UserProfileRepository from '../repository/userProfile.repository';
 import { checkPassword, createToken } from '../utils/auth/auth';
-import { BadRequestError, InternalServerError } from '../utils/errors/app.error';
+import { BadRequestError, InternalServerError, NotFoundError } from '../utils/errors/app.error';
 
 
 class UserService {
-    
-
     private userRepository: UserRepository;
     private userProfileRepository : UserProfileRepository;
 
@@ -20,12 +18,12 @@ class UserService {
 
     async createService(userData: RegisterUserDto) {
         const checkUser = await this.userRepository.findByEmail(userData.email);
-        if(checkUser){
+        if (checkUser) {
             throw new BadRequestError('User already registered');
         }
 
         const transaction = await sequelize.transaction();
-        try{
+        try {
             const newUser = await this.userRepository.create(userData, transaction);
             await this.userProfileRepository.create({ userId: newUser.id}, transaction);
 
@@ -35,29 +33,28 @@ class UserService {
 
             return jwtToken ;
 
-        }catch(error){
+        } catch (error){
             await transaction.rollback();
-            logger.error('something went wrong ', {error});
+            logger.error('Something went wrong ', {error});
             throw new InternalServerError('Error while creating user ');
         }
-
-
-
     }
 
     async loginService(userData: LoginUserDto){
         const checkUser = await this.userRepository.findByEmail(userData.email);
-        if(checkUser){ 
-            const verified = await checkPassword(userData.password , checkUser.password);
-            if(verified){
-                const jwtToken = createToken({id: checkUser.id, email: checkUser.email});
-                return jwtToken ;
-            }else{
-                throw new BadRequestError('incorrect password');
-            }
-        }else{
-            throw new BadRequestError('user not found');
+
+        if (!checkUser) {
+            throw new NotFoundError('User not found');
         }
+
+        const verified = await checkPassword(userData.password , checkUser.password);
+
+        if(!verified) {
+            throw new BadRequestError('Incorrect password');
+        }
+
+        const jwtToken = createToken({id: checkUser.id, email: checkUser.email});
+        return jwtToken;
 
     }
 
@@ -68,6 +65,8 @@ class UserService {
     async updateById() {}
 
     async deleteById() {}
+
+    isAuthenticated() {}
 }
 
 export default UserService;
