@@ -23,8 +23,11 @@ export const upload = multer({
             callback(null, { fieldName: file.fieldname });
         },
         acl: 'public-read',
-        key: function (_req, _file, callback) {
-            callback(null, Date.now().toString());
+        key: function (_req, file, callback) {
+            const originalName = file.originalname;
+            const extension = originalName.split('.').pop();
+            const uniqueFileName = `${Date.now().toString()}.${extension}`;
+            callback(null, uniqueFileName);
         }
     })
 });
