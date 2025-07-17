@@ -62,11 +62,23 @@ class UserService {
 
     async findAllService() {}
 
-    async findByIdService() {}
+    async findByIdService(id: number) {
+        const user = await this.userRepository.findById(id);
+        if (!user) {
+            throw new NotFoundError('User not found');
+        }
+        return user;
+    }
 
-    async updateById() {}
+    async updateById() {
+        
+    }
 
     async deleteById() {}
+
+    async softDeleteService(id: number) {
+        return await this.userRepository.softDelete(id);
+    }
 
     isAuthenticated(authToken: string){
         try {
