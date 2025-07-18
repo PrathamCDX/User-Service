@@ -2,7 +2,7 @@ import { NextFunction,  Response } from 'express';
 
 import logger from '../configs/logger.config';
 import UserRepository from '../repository/user.repository';
-import UserProfileRepository from '../repository/userProfile.repository';
+import UserProfileRepository from '../repository/userProfile.repository';                           
 import UserService from '../services/user.service';
 import { AuthRequest } from '../types/AuthRequest';
 import { UserTokenPayload } from '../types/UserTokenPayload';

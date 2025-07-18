@@ -3,6 +3,7 @@ import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import logger from '../configs/logger.config';
 import sequelize from '../db/models/sequelize';
 import { LoginUserDto, RegisterUserDto } from '../dtos/user.dto';
+import { UpdateUserDto } from '../dtos/userProfile.dto';
 import UserRepository from '../repository/user.repository';
 import UserProfileRepository from '../repository/userProfile.repository';
 import { checkPassword, createToken, verifyToken } from '../utils/auth/auth';
@@ -70,8 +71,9 @@ class UserService {
         return user;
     }
 
-    async updateById() {
-        
+    async updateByIdService(userUpdateData: UpdateUserDto){
+        const {id, ...data} = userUpdateData;
+        return await this.userRepository.updateById(id, data);
     }
 
     async deleteById() {}
