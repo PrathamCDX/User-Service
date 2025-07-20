@@ -57,6 +57,23 @@ class UserRepository extends BaseRepository<User> {
         });
         return user;
     }
+
+    async getUserRolesById(userId: number){
+        const user = await this.model.findByPk(userId, {
+            include: [
+                {
+                    association: User.associations.roles,
+                    attributes: ['name']
+                }
+            ]
+        });
+        
+        if (!user) {
+            throw new NotFoundError('User not found');
+        }
+
+        return user;
+    }
     
 }
 
