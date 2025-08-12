@@ -7,5 +7,6 @@ import cityController from '../../controllers/city.controller';
 const cityRouter = Router();
 
 cityRouter.get('/', cityController.getCity);
+cityRouter.get('/:id', cityController.getCityById);
 
 export default cityRouter ;

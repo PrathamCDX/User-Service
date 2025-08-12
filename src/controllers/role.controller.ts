@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 import RoleRepository from '../repository/role.repository';
 import UserRepository from '../repository/user.repository';
@@ -106,13 +107,26 @@ async function updateRoles(req: Request , res: Response, next: NextFunction){
 async function getRoleByNameHandler(req: Request , res: Response, next: NextFunction){
     try {
         const role = req.query.name ;
-
-
         const response = await roleService.getRoleByNameService(String(role));
         res.status(201).json({
             success: true,
             message: 'Role fetched successfully',
             data: response,
+            error: {}
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getUserRolesById(req: Request , res: Response, next: NextFunction){
+    try {
+        const userId = Number(req.params.id);
+        const response = await roleService.getUserRolesByIdService(userId);
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'User roles fetched successfully',
+            data: response ,
             error: {}
         });
     } catch (error) {
@@ -126,5 +140,6 @@ export default {
     updateRoles,
     deleteRoles,
     getRoles,
-    getRoleByNameHandler
+    getRoleByNameHandler,
+    getUserRolesById
 };

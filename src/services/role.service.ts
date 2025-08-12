@@ -12,6 +12,12 @@ class RoleService {
         this.roleRepository = roleRepository;
     }
 
+    async getUserRolesByIdService(userId: number){
+        const userRoles = await this.userRepository.getUserRolesById(userId);
+        const roleNames = userRoles.roles?.map((role) => role.name);
+        return roleNames ;
+    }
+
     async getRoleService(data: GetRoleDto){
         const {userId} = data ;
 

@@ -8,6 +8,7 @@ import { CreateLocationSchema } from '../../validators/location.dto';
 const locationRouter = Router();
 
 locationRouter.post('/:id', authenticationMiddleware, validateRequestBody(CreateLocationSchema), locationController.createLocation);
+locationRouter.get('/:id', locationController.getLocation);
 
 
 export default locationRouter ;

@@ -5,6 +5,7 @@ import UserRepository from '../repository/user.repository';
 import UserProfileRepository from '../repository/userProfile.repository';
 import UserService from '../services/user.service';
 import UserProfileService from '../services/userProfile.service';
+import { AuthRequest } from '../types/AuthRequest';
 
 const userRepository = new UserRepository();
 const userProfileRepository = new UserProfileRepository();
@@ -37,9 +38,9 @@ async function uploadResumeHandler(req: Request, res: Response) {
     });
 }
 
-async function getUserDetailsById(req: Request, res: Response, next: NextFunction) {
+async function getUserDetailsById(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-        const id = req.params.id;
+        const id = req.user?.id;
         const userDetails = await userService.findByIdService(Number(id));
         
         res.status(StatusCodes.OK).json({

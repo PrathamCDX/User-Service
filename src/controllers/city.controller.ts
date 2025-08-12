@@ -8,15 +8,29 @@ const cityRepository = new CityRepository;
 
 const cityService = new CityService(cityRepository); 
 
+async function getCityById(req: Request, res: Response, next: NextFunction){
+    try {
+        const id= req.params.id ;
+
+        const response = await cityService.getCityById(Number(id));
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'City fetched successfully',
+            data: response,
+            error: {}
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 async function getCity(req: Request, res: Response, next: NextFunction){
 
     try {
-        const city = req.query.name ;
-        
+        const city = req.query.city ;
         const getCityData = {
             city : String(city)
         };
-
 
         const response = await cityService.getCityService(getCityData);
         res.status(StatusCodes.OK).json({
@@ -32,5 +46,6 @@ async function getCity(req: Request, res: Response, next: NextFunction){
 }
 
 export default {
-    getCity
+    getCity,
+    getCityById
 };

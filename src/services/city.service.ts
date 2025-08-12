@@ -8,8 +8,12 @@ class CityService {
         this.cityRepository = cityRepository ;
     }
 
-    async getCityService(data : GetCityDto ){
+    async getCityById(id: number){
+        console.log('object');
+        return await this.cityRepository.findById(id);
+    }
 
+    async getCityService(data : GetCityDto ){
         return await this.cityRepository.getCity(data.city);
     }    
 }

@@ -20,6 +20,12 @@ class LocationService {
         this.countryRepository= countryRepository;
     }
 
+    async getLocationSerivce(id: number){
+        const location = await this.cityRepository.getLocation(id);
+        console.log(location);
+        return location ;
+    }
+
     async createLocationService (data : CreateLocationDto){
         const checkCity= data.city? await this.cityRepository.findByName(data.city) : null;
         const checkState= data.state? await this.stateRepository.findByName(data.state): null ;  
@@ -62,8 +68,7 @@ class LocationService {
         } catch (error) {
             await transaction.rollback();
             logger.error(error);
-            throw error;
-            
+            throw error;  
         }
 
         

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 import { DeleteSkillDto, UpdateSkillDto } from '../dtos/skill.dto';
 import SkillRepository from '../repository/skill.repository';
@@ -11,11 +12,11 @@ const skillService = new SkillService(userRepository, skillRepository);
 
 async function getSkillHandler(req: Request, res: Response, next: NextFunction){
     try {
-        const skill = req.query.name ;
+        const skill = req.query.skill ;
 
         const response = await skillService.getSkillService(String(skill));
 
-        res.status(201).json({
+        res.status(StatusCodes.OK).json({
             success: true,
             message: 'Skill fetched successfully',
             data: response,
@@ -103,10 +104,26 @@ async function deleteSkillHandler(req: Request, res: Response, next: NextFunctio
     }
 }
 
+async function getSkillByIdHandler(req: Request, res: Response, next: NextFunction){
+    try {
+        const id= Number(req.params.id);
+        const response = await skillService.getSkillByIdService(id);
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'Skill fetched successfully',
+            data: response,
+            error: {}
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 export default {
     createSkillHandler,
     updateSkillHandler,
     deleteSkillHandler,
-    getSkillHandler
+    getSkillHandler,
+    getSkillByIdHandler
 };

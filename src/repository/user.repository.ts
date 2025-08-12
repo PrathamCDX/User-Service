@@ -37,7 +37,7 @@ class UserRepository extends BaseRepository<User> {
 
     async findById (id: number): Promise<User | null> {
         const user = await this.model.findByPk(id, {
-            attributes: ['fullName','email', 'phoneNo'],
+            attributes: ['fullName','email', 'phoneNo', 'id'],
             include: [
                 {
                     association: User.associations.profile,
@@ -51,6 +51,10 @@ class UserRepository extends BaseRepository<User> {
                 },
                 {
                     association: User.associations.skills,
+                    attributes: ['name']
+                },
+                {
+                    association: User.associations.roles,
                     attributes: ['name']
                 }
             ]

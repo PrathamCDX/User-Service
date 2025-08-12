@@ -13,6 +13,10 @@ class SkillService {
         this.skillRepository= skillRepository;
     }
 
+    async getSkillByIdService(id: number){
+        return this.skillRepository.findById(id);
+    }
+
     async createSkillService(data: CreateSkillDto) {
         
         const { userId, skillList } = data;

@@ -45,6 +45,23 @@ async function createLocation (req: Request, res: Response, next: NextFunction){
     }
 }
 
+async function getLocation(req: Request, res: Response, next: NextFunction){
+    try {
+        const id= Number(req.params.id);
+        const response =await locationService.getLocationSerivce(id);
+        console.log(response);
+        res.status(StatusCodes.OK).json({
+            success: true ,
+            message: 'Location fetched successfully',
+            data: response ,
+            error: {}
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
-    createLocation
+    createLocation,
+    getLocation
 };
