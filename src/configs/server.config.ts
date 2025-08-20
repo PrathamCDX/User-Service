@@ -21,6 +21,10 @@ type DBConfig = {
     DB_NAME: string
 }
 
+type FrontendConfig= {
+    FRONTEND_URL: string
+}
+
 dotenv.config();
 
 export const serverConfig: ServerConfig =  {
@@ -42,4 +46,8 @@ export const awsConfig: AwsConfig = {
     AWS_ACCESS_KEY_ID: String(process.env.AWS_ACCESS_KEY_ID),
     AWS_SECRET_ACCESS_KEY: String(process.env.AWS_SECRET_ACCESS_KEY),
     AWS_S3_BUCKET_NAME: String(process.env.AWS_S3_BUCKET_NAME)
+};
+
+export const frontendConfig: FrontendConfig = {
+    FRONTEND_URL: String(process.env.FRONTEND_URL)
 };
