@@ -38,7 +38,7 @@ async function uploadResumeHandler(req: Request, res: Response) {
     });
 }
 
-async function getUserDetailsById(req: AuthRequest, res: Response, next: NextFunction) {
+async function getSelfDetails(req: AuthRequest, res: Response, next: NextFunction){
     try {
         const id = req.user?.id;
         const userDetails = await userService.findByIdService(Number(id));
@@ -101,9 +101,25 @@ async function updateUserHandler(req: Request, res: Response, next: NextFunction
     }
 }
 
+async function getUserDetailsById(req: AuthRequest, res: Response, next: NextFunction){
+    try {
+        const id= req.params.id ;
+        const userDetails = await userService.findByIdService(Number(id));
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'User skills updated successfully',
+            data: userDetails,
+            error: {}
+        });     
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
-    getUserDetailsById,
+    getSelfDetails,
     updateUserHandler,
     updateUserProfileHandler,
     uploadResumeHandler,
+    getUserDetailsById,
 };
