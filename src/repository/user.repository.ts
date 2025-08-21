@@ -51,11 +51,11 @@ class UserRepository extends BaseRepository<User> {
                 },
                 {
                     association: User.associations.skills,
-                    attributes: ['name']
+                    attributes: ['id','name']
                 },
                 {
                     association: User.associations.roles,
-                    attributes: ['name']
+                    attributes: ['id','name']
                 }
             ]
         });

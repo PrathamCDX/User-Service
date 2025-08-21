@@ -5,7 +5,7 @@ export const createUserSkillSchema = z.object({
         .array(z
             .number({ required_error: 'Skill ID must be a number' })
             .int({ message: 'Skill ID must be an integer' })
-        ).nonempty({ message: 'At least one skill ID is required' })
+        )
 });
 
 export const deleteUserSkillSchema = z.object({

@@ -82,11 +82,12 @@ async function updateUserProfileHandler(req: Request, res: Response, next: NextF
 async function updateUserHandler(req: Request, res: Response, next: NextFunction) {
     try {
         const id = req.params.id;
-        const {data} = req.body;
+        const data = req.body;
         const userUpdateData = {
             id: Number(id),
             ...data
         };
+        console.log(data);
 
         const updatedSkills = await userService.updateByIdService(userUpdateData);
 
