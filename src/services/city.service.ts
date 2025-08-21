@@ -9,7 +9,6 @@ class CityService {
     }
 
     async getCityById(id: number){
-        console.log('object');
         return await this.cityRepository.findById(id);
     }
 
