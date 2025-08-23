@@ -6,6 +6,6 @@ import { validateRequestBody } from '../../validators';
 import { createUserSkillSchema, deleteUserSkillSchema } from '../../validators/userSkill.validator';
 const userSkillRouter = Router();
 
-userSkillRouter.post('/:id', authenticationMiddleware, validateRequestBody(createUserSkillSchema), userSkillController.createUserSkillHandler);
-userSkillRouter.delete('/:id', authenticationMiddleware, validateRequestBody(deleteUserSkillSchema), userSkillController.deleteUserSkillHandler);
+userSkillRouter.post('/', authenticationMiddleware, validateRequestBody(createUserSkillSchema), userSkillController.createUserSkillHandler);
+userSkillRouter.delete('/:skillId', authenticationMiddleware, validateRequestBody(deleteUserSkillSchema), userSkillController.deleteUserSkillHandler);
 export default userSkillRouter;

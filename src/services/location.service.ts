@@ -22,7 +22,6 @@ class LocationService {
 
     async getLocationSerivce(id: number){
         const location = await this.cityRepository.getLocation(id);
-        console.log(location);
         return location ;
     }
 

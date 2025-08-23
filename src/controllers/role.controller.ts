@@ -108,7 +108,7 @@ async function getRoleByNameHandler(req: Request , res: Response, next: NextFunc
     try {
         const role = req.query.name ;
         const response = await roleService.getRoleByNameService(String(role));
-        res.status(201).json({
+        res.status(StatusCodes.OK).json({
             success: true,
             message: 'Role fetched successfully',
             data: response,
