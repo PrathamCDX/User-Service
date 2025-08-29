@@ -1,16 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+import RoleRepository from '../repository/role.repository';
 import UserRepository from '../repository/user.repository';
 import UserProfileRepository from '../repository/userProfile.repository';
+import UserRoleRepository from '../repository/userRole.repository';
 import UserService from '../services/user.service';
 import UserProfileService from '../services/userProfile.service';
 import { AuthRequest } from '../types/AuthRequest';
 
 const userRepository = new UserRepository();
 const userProfileRepository = new UserProfileRepository();
+const userRoleRepository = new UserRoleRepository();
+const roleRepository = new RoleRepository();
 
-const userService = new UserService(userRepository, userProfileRepository);
+const userService = new UserService(userRepository, userProfileRepository, roleRepository, userRoleRepository);
 const userProfileService = new UserProfileService(userProfileRepository);
 
 async function uploadResumeHandler(req: Request, res: Response) {

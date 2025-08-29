@@ -7,6 +7,8 @@ class SkillRepository extends BaseRepository<Skill> {
     constructor() {
         super(Skill);
     }
+
+    
     async getSkill(skill: string){
         const record = await this.model.findAll({
             where:{
@@ -28,7 +30,19 @@ class SkillRepository extends BaseRepository<Skill> {
             }
         });
 
-        return foundSkills.length === skillIds.length;
+        return foundSkills;
+    }
+
+    async validateSkillNames(skillName: string[]){
+        const foundSkills= await this.model.findAll({
+            where: {
+                name: {
+                    [Op.in]: skillName
+                }
+            }
+        });
+
+        return foundSkills ;
     }
 
     async bulkCreate(skillList: string[]) {

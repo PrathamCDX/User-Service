@@ -32,7 +32,12 @@ class SkillService {
             throw new UnauthorizedError('Not an admin');
         }
 
-        const createdSkills = await this.skillRepository.bulkCreate(skillList);
+        const foundSkills = await this.skillRepository.validateSkillNames(skillList);
+        // const freshSKills = skillList.filter((skill)=>{return !foundSkills.map((skill)=> skill.name).includes(skill)});
+        const foundNamesSet = new Set(foundSkills.map(s => s.name));
+        const freshSkills = skillList.filter(skill => !foundNamesSet.has(skill));
+        
+        const createdSkills = await this.skillRepository.bulkCreate(freshSkills);
 
         return createdSkills ;
     }

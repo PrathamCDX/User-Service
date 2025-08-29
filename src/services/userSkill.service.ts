@@ -21,8 +21,8 @@ class UserSkillService {
             throw new NotFoundError('User not found');
         }
 
-        const checkValidSkill = await this.skillRepository.validateSkillIds(data.skilldIds);
-        if(!checkValidSkill) {
+        const foundSkills = await this.skillRepository.validateSkillIds(data.skilldIds);
+        if(foundSkills.length === data.skilldIds.length) {
             throw new NotFoundError('Invalid skill IDs provided');
         }
 

@@ -5,6 +5,7 @@ import { DeleteSkillDto, UpdateSkillDto } from '../dtos/skill.dto';
 import SkillRepository from '../repository/skill.repository';
 import UserRepository from '../repository/user.repository';
 import SkillService from '../services/skill.service';
+import { AuthRequest } from '../types/AuthRequest';
 
 const userRepository= new UserRepository();
 const skillRepository= new SkillRepository(); 
@@ -28,10 +29,10 @@ async function getSkillHandler(req: Request, res: Response, next: NextFunction){
 
 }
 
-async function createSkillHandler(req: Request, res: Response, next: NextFunction){
+async function createSkillHandler(req: AuthRequest, res: Response, next: NextFunction){
     try {
         
-        const userId = req.params.id;
+        const userId = req.user?.id;
         const {skills} = req.body;
 
         const createSkillData = {
