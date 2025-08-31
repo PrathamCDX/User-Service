@@ -30,7 +30,7 @@ class UserService {
         if (checkUser) {
             throw new BadRequestError('User already registered');
         }
-        const roles = await this.roleRepository.getRoles('Job Seeker');
+        const roles = await this.roleRepository.getRoles('jobseeker');
         const roleId = roles[0].id ;
         const transaction = await sequelize.transaction();
         try {
