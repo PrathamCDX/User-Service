@@ -25,7 +25,7 @@ v1Router.use('/skills', skillRouter);
 
 v1Router.use('/role', roleRouter);
 
-v1Router.use('/location', locationRouter);
+v1Router.use('/locations', locationRouter);
 
 v1Router.use('/city', cityRouter);
 

@@ -26,9 +26,9 @@ class LocationService {
     }
 
     async createLocationService (data : CreateLocationDto){
-        const checkCity= data.city? await this.cityRepository.findByName(data.city) : null;
-        const checkState= data.state? await this.stateRepository.findByName(data.state): null ;  
-        const checkCountry= data.country? await this.countryRepository.findByName(data.country): null;
+        const checkCity= data.city? await this.cityRepository.findByName(data.city.trim()) : null;
+        const checkState= data.state? await this.stateRepository.findByName(data.state.trim()): null ;  
+        const checkCountry= data.country? await this.countryRepository.findByName(data.country.trim()): null;
 
         let newCountry= null;
         let newState= null;
