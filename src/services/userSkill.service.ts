@@ -22,7 +22,7 @@ class UserSkillService {
         }
 
         const foundSkills = await this.skillRepository.validateSkillIds(data.skilldIds);
-        if(foundSkills.length === data.skilldIds.length) {
+        if(foundSkills.length == 0) {
             throw new NotFoundError('Invalid skill IDs provided');
         }
 

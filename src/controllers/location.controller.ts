@@ -5,15 +5,16 @@ import CityRepository from '../repository/city.repository';
 import CountryRepository from '../repository/country.repository';
 import StateRepository from '../repository/state.repository';
 import LocationService from '../services/location.service';
+import { AuthRequest } from '../types/AuthRequest';
 
 const cityRepository = new CityRepository();
 const stateRepository = new StateRepository();
 const countryRepository = new CountryRepository();
 const locationService = new LocationService(cityRepository, stateRepository, countryRepository);
 
-async function createLocation (req: Request, res: Response, next: NextFunction){
+async function createLocation (req: AuthRequest, res: Response, next: NextFunction){
     try {
-        const id = req.params.id ;
+        const id = req.user?.id ;
         const {city, state, country} = req.body;
 
         const createLocationData = {

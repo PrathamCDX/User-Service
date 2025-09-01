@@ -91,7 +91,6 @@ async function updateUserHandler(req: Request, res: Response, next: NextFunction
             id: Number(id),
             ...data
         };
-        console.log(data);
 
         const updatedSkills = await userService.updateByIdService(userUpdateData);
 
