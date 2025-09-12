@@ -120,7 +120,26 @@ async function getUserDetailsById(req: AuthRequest, res: Response, next: NextFun
     }
 }
 
+async function getAllUsers(req: AuthRequest, res: Response, next: NextFunction){
+    try {
+        const id = Number(req.user?.id);
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 10;
+
+        const response = await userService.findAllCandidatesService(id, page, limit);
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'Users fetched successfully',
+            data: response,
+            error: {}
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
+    getAllUsers,
     getSelfDetails,
     updateUserHandler,
     updateUserProfileHandler,
