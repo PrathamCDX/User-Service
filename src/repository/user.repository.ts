@@ -64,7 +64,7 @@ class UserRepository extends BaseRepository<User> {
 
     async findAllCandidates({limit, offset}:{limit: number, offset: number}){
         const users = await this.model.findAndCountAll({
-            attributes: ['fullName','email', 'phoneNo', 'id'],
+            attributes: ['fullName','email', 'phoneNo', 'id','created_at'],
             where: {
                 deletedAt: {
                     [Op.eq]: null
@@ -78,7 +78,7 @@ class UserRepository extends BaseRepository<User> {
                     }
                 }
             ],
-            // order: [['created_at', 'DESC']],
+            order: [['created_at', 'DESC']],
             limit,
             offset,
         });
