@@ -68,7 +68,39 @@ class UserService {
 
     }
 
-    async findAllService() {}
+    async findAllCandidatesService(userId: number, page: number, limit: number) {
+        try {
+            const userRoles = await this.userRepository.getUserRolesById(userId);
+        
+            const roleNames = userRoles.roles?.map((role) => role.name);
+            if(!roleNames) {
+                throw new NotFoundError('No roles found ');
+            }
+                
+            if(!roleNames.includes('admin')){
+                throw new UnauthorizedError('Not an admin');
+            }
+
+            const offset = (page - 1) * limit;
+
+
+            const { rows: records, count: totalCount } = await this.userRepository.findAllCandidates({limit, offset});
+            const totalPages = Math.ceil(totalCount / limit);
+
+            return {
+                records: records,
+                pagination: {
+                    totalCount,
+                    totalPages,
+                    currentPage: page,
+                    limit,
+                },
+            };
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error while creating user '); 
+        }
+    }
 
     async findByIdService(id: number) {
         const user = await this.userRepository.findById(id);

@@ -8,9 +8,9 @@ import { updateUserProfileSchema, updateUserSchema } from '../../validators/user
 
 const userRouter = Router();
 
-userRouter.get('/:id', authenticationMiddleware, userController.getUserDetailsById);
-userRouter.post('/upload-resume',authenticationMiddleware, upload.single('file'), userController.uploadResumeHandler);
-userRouter.get('/',authenticationMiddleware, userController.getSelfDetails);
+userRouter.get('/pages', authenticationMiddleware, userController.getAllUsers);
+userRouter.get('/', authenticationMiddleware, userController.getSelfDetails);
+userRouter.get('/:id', authenticationMiddleware, userController.getUserDetailsById);userRouter.post('/upload-resume',authenticationMiddleware, upload.single('file'), userController.uploadResumeHandler);
 userRouter.put('/update-profile/:id', authenticationMiddleware, validateRequestBody(updateUserProfileSchema), userController.updateUserProfileHandler);
 userRouter.put('/update/:id', authenticationMiddleware, validateRequestBody(updateUserSchema), userController.updateUserHandler);
 

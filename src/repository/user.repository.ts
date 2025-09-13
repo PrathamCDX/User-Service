@@ -1,4 +1,4 @@
-import { CreationAttributes, Transaction } from 'sequelize';
+import { CreationAttributes, Op, Transaction } from 'sequelize';
 
 import User from '../db/models/user.model';
 import UserProfile from '../db/models/userProfile.model';
@@ -60,6 +60,30 @@ class UserRepository extends BaseRepository<User> {
             ]
         });
         return user;
+    }
+
+    async findAllCandidates({limit, offset}:{limit: number, offset: number}){
+        const users = await this.model.findAndCountAll({
+            attributes: ['fullName','email', 'phoneNo', 'id','created_at'],
+            where: {
+                deletedAt: {
+                    [Op.eq]: null
+                }
+            },
+            include: [
+                {
+                    association: User.associations.roles,
+                    where: {
+                        name: 'Job Seeker'
+                    }
+                }
+            ],
+            order: [['created_at', 'DESC']],
+            limit,
+            offset,
+        });
+
+        return users ;
     }
 
     async getUserRolesById(userId: number){
