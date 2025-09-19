@@ -17,7 +17,12 @@ export const registerSchema = z.object({
         }),
     phoneNo: z
         .string({ required_error: 'Phone number is required' })
-        .regex(/^[6-9]\d{9}$/, { message: 'Phone number must be a valid 10-digit Indian mobile number' })
+        .regex(/^[6-9]\d{9}$/, { message: 'Phone number must be a valid 10-digit Indian mobile number' }),
+    graduationYear: z
+        .string({ message: 'Graduation year is required' })
+        .regex(/^(19|20)\d{2}$/, {
+            message: 'Graduation year must be between 1900 and 2099',
+        }),
 });
 
 export const loginSchema = z.object({

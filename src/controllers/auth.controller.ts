@@ -22,7 +22,7 @@ async function registerHandler(req: Request, res: Response, next: NextFunction) 
         const response = await userService.createService(requestBody);
         res.status(StatusCodes.CREATED).json({
             success: true,
-            message: 'User Creeated Successfully',
+            message: 'User Created Successfully',
             data : response,
             error: {}
         });

@@ -26,46 +26,56 @@ class UserService {
     }
 
     async createService(userData: RegisterUserDto) {
-        const checkUser = await this.userRepository.findByEmail(userData.email);
-        if (checkUser) {
-            throw new BadRequestError('User already registered');
-        }
-        const roles = await this.roleRepository.getRoles('Job Seeker');
-        const roleId = roles[0].id ;
-        const transaction = await sequelize.transaction();
         try {
-            const newUser = await this.userRepository.create(userData, transaction);
-            await this.userProfileRepository.create({ userId: newUser.id}, transaction);
-            await this.userRoleRepository.createUserRole({userId: newUser.id, roleId: roleId, transaction});
-            await transaction.commit();
+            const checkUser = await this.userRepository.findByEmail(userData.email);
+            if (checkUser) {
+                throw new BadRequestError('User already registered');
+            }
+            const roles = await this.roleRepository.getRoles('Job Seeker');
+            const roleId = roles[0].id ;
+            const transaction = await sequelize.transaction();
+            try {
+                const newUser = await this.userRepository.create(userData, transaction);
+                await this.userProfileRepository.create({ userId: newUser.id}, transaction);
+                await this.userRoleRepository.createUserRole({userId: newUser.id, roleId: roleId, transaction});
+                await transaction.commit();
 
-            const jwtToken = createToken({id: newUser.id, email: newUser.email});
+                const jwtToken = createToken({id: newUser.id, email: newUser.email});
 
-            return jwtToken ;
+                return jwtToken ;
 
-        } catch (error){
-            await transaction.rollback();
-            logger.error('Something went wrong ', {error});
-            throw new InternalServerError('Error while creating user ');
+            } catch (error){
+                await transaction.rollback();
+                logger.error('Something went wrong ', {error});
+                throw new InternalServerError('Error while creating user ');
+            }
+        } catch (error) {
+            logger.error( error);
+            throw new InternalServerError('Error While Creating User ');
         }
     }
 
     async loginService(userData: LoginUserDto){
-        const checkUser = await this.userRepository.findByEmail(userData.email);
+        try {
+            const checkUser = await this.userRepository.findByEmail(userData.email);
 
-        if (!checkUser) {
-            throw new NotFoundError('User not found');
+            if (!checkUser) {
+                throw new NotFoundError('User not found');
+            }
+
+            const verified = await checkPassword(userData.password , checkUser.password);
+
+            if(!verified) {
+                throw new BadRequestError('Incorrect password');
+            }
+
+            const jwtToken = createToken({id: checkUser.id, email: checkUser.email});
+            return jwtToken;
+
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error while logging in');
         }
-
-        const verified = await checkPassword(userData.password , checkUser.password);
-
-        if(!verified) {
-            throw new BadRequestError('Incorrect password');
-        }
-
-        const jwtToken = createToken({id: checkUser.id, email: checkUser.email});
-        return jwtToken;
-
     }
 
     async findAllCandidatesService(userId: number, page: number, limit: number) {

@@ -14,6 +14,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare email: string;
     declare password: string;
     declare phoneNo: string;
+    declare graduationYear: CreationOptional<string>;
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
     declare deletedAt: CreationOptional<Date | null>;
@@ -59,7 +60,10 @@ User.init({
         type: DataTypes.STRING(15),
         allowNull: false
     },
-
+    graduationYear: {
+        type: DataTypes.STRING(4),
+        allowNull: true
+    },
     createdAt: {
         type: DataTypes.DATE,
         allowNull: false
