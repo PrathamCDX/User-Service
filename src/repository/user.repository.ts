@@ -74,7 +74,7 @@ class UserRepository extends BaseRepository<User> {
                 {
                     association: User.associations.roles,
                     where: {
-                        name: 'Job Seeker'
+                        name: 'jobseeker'
                     }
                 }
             ],

@@ -25,7 +25,7 @@ export default {
             { name: 'Maharashtra', country_id: 5 },
             { name: 'Telangana', country_id: 5 },
             { name: 'Tamil Nadu', country_id: 5 },
-            { name: 'West Bengal (Kolkata Metro)', country_id: 5 },
+            { name: 'West Bengal', country_id: 5 },
             { name: 'Delhi NCR', country_id: 5 },
             { name: 'Andhra Pradesh', country_id: 5 },
             { name: 'Gujarat', country_id: 5 },

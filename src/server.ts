@@ -12,7 +12,7 @@ import apiRouter from './routes';
 
 const app = express();
 app.use(cors({
-    origin: [frontendConfig.FRONTEND_URL, 'http://localhost:3000/'], 
+    origin: [frontendConfig.FRONTEND_URL], 
     credentials: true,
 }));
 
@@ -21,6 +21,13 @@ app.use(express.json());
 app.use(attachCorrelationIdMiddleware);
 
 app.use('/api', apiRouter);
+
+app.get('/health', (_req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Server is healthy'
+    });
+});
 
 app.use(appErrorHandler);
 app.use(genericErrorHandler);
