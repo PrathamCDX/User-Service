@@ -25,6 +25,26 @@ class UserService {
         this.userRoleRepository = userRoleRepository;
     }
 
+    async findByNameService(fullName: string){
+        try{
+            const users =await this.userRepository.findByName(fullName);
+            return users ;
+        }catch (error){
+            logger.error('Something went wrong ', {error});
+            throw new InternalServerError('Error while searching by full name ');
+        }
+    }
+
+    async findByEmailService(email: string){
+        try{
+            const user = await this.userRepository.findByEmailWithoutPassword(email);
+            return user ;
+        }catch(error){
+            logger.error('Something went wrong ', {error});
+            throw new InternalServerError('Error while searching by email ');
+        }
+    }
+
     async createService(userData: RegisterUserDto) {
         try {
             const checkUser = await this.userRepository.findByEmail(userData.email);
@@ -62,7 +82,7 @@ class UserService {
             if (!checkUser) {
                 throw new NotFoundError('User not found');
             }
-
+            
             const verified = await checkPassword(userData.password , checkUser.password);
 
             if(!verified) {
