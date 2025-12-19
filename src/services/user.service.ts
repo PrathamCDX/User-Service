@@ -2,7 +2,7 @@ import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 
 import logger from '../configs/logger.config';
 import sequelize from '../db/models/sequelize';
-import { LoginUserDto, RegisterUserDto } from '../dtos/user.dto';
+import { FindUserByNameDto, LoginUserDto, RegisterUserDto } from '../dtos/user.dto';
 import { UpdateUserDto } from '../dtos/userProfile.dto';
 import RoleRepository from '../repository/role.repository';
 import UserRepository from '../repository/user.repository';
@@ -25,9 +25,13 @@ class UserService {
         this.userRoleRepository = userRoleRepository;
     }
 
-    async findByNameService(fullName: string){
+    async findByNameService(data: FindUserByNameDto){
         try{
-            const users =await this.userRepository.findByName(fullName);
+            const limit = Number.isNaN(data.limit) ? 10 : Number(data.limit);
+            const page = Number.isNaN(data.page) ? 1 : Number(data.page);
+            const offset = (page - 1) * limit;
+            
+            const users =await this.userRepository.findByName(data.fullName, limit, offset);
             return users ;
         }catch (error){
             logger.error('Something went wrong ', {error});

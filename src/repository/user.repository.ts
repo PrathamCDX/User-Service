@@ -10,12 +10,25 @@ class UserRepository extends BaseRepository<User> {
         super(User);
     }
 
-    async findByName(fullName: string): Promise<User[]> {
-        const checkUser = await this.model.findAll({
-            where: { fullName: { [Op.like]: `%${fullName}%` } },
-            attributes: { exclude: ['password'] }
+
+    async findByName(
+        fullName: string,
+        limit: number ,
+        offset: number
+    ){
+        const data = await this.model.findAndCountAll({
+            where: {
+                fullName: {
+                    [Op.like]: `%${fullName}%`,
+                },
+            },
+            attributes: { exclude: ['password'] },
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']],
         });
-        return checkUser;
+
+        return data;
     }
 
     async findByEmailWithoutPassword(email: string): Promise<User | null>{

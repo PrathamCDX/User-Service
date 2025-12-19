@@ -19,8 +19,11 @@ const userProfileService = new UserProfileService(userProfileRepository);
 
 async function getUsersByName(req: Request, res: Response, next: NextFunction){
     try{
-        const name = String(req.query.name);
-        const userList = await userService.findByNameService(name);
+        const fullName = String(req.query.name);
+        const page = Number(req.query.page);
+        const limit = Number(req.query.limit);
+
+        const userList = await userService.findByNameService({fullName, page, limit} );
         
         res.status(StatusCodes.OK).json({
             success: true,
