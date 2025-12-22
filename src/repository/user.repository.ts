@@ -19,7 +19,7 @@ class UserRepository extends BaseRepository<User> {
         const data = await this.model.findAndCountAll({
             where: {
                 fullName: {
-                    [Op.like]: `%${fullName}%`,
+                    [Op.like]: `${fullName}%`,
                 },
             },
             attributes: { exclude: ['password'] },
