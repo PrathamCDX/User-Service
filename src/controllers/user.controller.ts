@@ -17,6 +17,41 @@ const roleRepository = new RoleRepository();
 const userService = new UserService(userRepository, userProfileRepository, roleRepository, userRoleRepository);
 const userProfileService = new UserProfileService(userProfileRepository);
 
+async function getUsersByName(req: Request, res: Response, next: NextFunction){
+    try{
+        const fullName = String(req.query.name);
+        const page = Number(req.query.page);
+        const limit = Number(req.query.limit);
+
+        const userList = await userService.findByNameService({fullName, page, limit} );
+        
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'User list retrieved successfully',
+            data: userList,
+            error: {}
+        });
+    }catch(error){
+        next(error);
+    }
+}
+
+async function getUsersByEmail(req: Request, res: Response, next: NextFunction){
+    try{
+        const email = String(req.query.email);
+        const user = await userService.findByEmailService(email);
+        
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'User list retrieved successfully',
+            data: user,
+            error: {}
+        });
+    }catch(error){
+        next(error);
+    }
+}
+
 async function uploadResumeHandler(req: Request, res: Response) {
     if (!req.file) {
         res.status(StatusCodes.BAD_REQUEST).json({
@@ -145,4 +180,6 @@ export default {
     updateUserProfileHandler,
     uploadResumeHandler,
     getUserDetailsById,
+    getUsersByName,
+    getUsersByEmail
 };

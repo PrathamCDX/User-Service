@@ -10,3 +10,9 @@ export type LoginUserDto = {
     email: string
     password: string
 }
+
+export type FindUserByNameDto = {
+    fullName: string,
+    page: number,
+    limit: number
+}

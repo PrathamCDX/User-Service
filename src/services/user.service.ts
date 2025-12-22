@@ -2,7 +2,7 @@ import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 
 import logger from '../configs/logger.config';
 import sequelize from '../db/models/sequelize';
-import { LoginUserDto, RegisterUserDto } from '../dtos/user.dto';
+import { FindUserByNameDto, LoginUserDto, RegisterUserDto } from '../dtos/user.dto';
 import { UpdateUserDto } from '../dtos/userProfile.dto';
 import RoleRepository from '../repository/role.repository';
 import UserRepository from '../repository/user.repository';
@@ -23,6 +23,30 @@ class UserService {
         this.userProfileRepository = userProfileRepository;
         this.roleRepository = roleRepository;
         this.userRoleRepository = userRoleRepository;
+    }
+
+    async findByNameService(data: FindUserByNameDto){
+        try{
+            const limit = Number.isNaN(data.limit) ? 10 : Number(data.limit);
+            const page = Number.isNaN(data.page) ? 1 : Number(data.page);
+            const offset = (page - 1) * limit;
+            
+            const users =await this.userRepository.findByName(data.fullName, limit, offset);
+            return users ;
+        }catch (error){
+            logger.error('Something went wrong ', {error});
+            throw new InternalServerError('Error while searching by full name ');
+        }
+    }
+
+    async findByEmailService(email: string){
+        try{
+            const user = await this.userRepository.findByEmailWithoutPassword(email);
+            return user ;
+        }catch(error){
+            logger.error('Something went wrong ', {error});
+            throw new InternalServerError('Error while searching by email ');
+        }
     }
 
     async createService(userData: RegisterUserDto) {
@@ -62,7 +86,7 @@ class UserService {
             if (!checkUser) {
                 throw new NotFoundError('User not found');
             }
-
+            
             const verified = await checkPassword(userData.password , checkUser.password);
 
             if(!verified) {

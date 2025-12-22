@@ -10,8 +10,11 @@ const userRouter = Router();
 
 userRouter.get('/pages', authenticationMiddleware, userController.getAllUsers);
 userRouter.get('/', authenticationMiddleware, userController.getSelfDetails);
-userRouter.get('/:id', authenticationMiddleware, userController.getUserDetailsById);userRouter.post('/upload-resume',authenticationMiddleware, upload.single('file'), userController.uploadResumeHandler);
+userRouter.get('/:id', authenticationMiddleware, userController.getUserDetailsById);
+userRouter.post('/upload-resume',authenticationMiddleware, upload.single('file'), userController.uploadResumeHandler);
 userRouter.put('/update-profile/:id', authenticationMiddleware, validateRequestBody(updateUserProfileSchema), userController.updateUserProfileHandler);
 userRouter.put('/update/:id', authenticationMiddleware, validateRequestBody(updateUserSchema), userController.updateUserHandler);
+userRouter.get('/search/name', authenticationMiddleware, userController.getUsersByName);
+userRouter.get('/search/email', authenticationMiddleware, userController.getUsersByEmail);
 
 export default userRouter;
