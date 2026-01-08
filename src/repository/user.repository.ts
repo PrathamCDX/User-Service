@@ -114,7 +114,7 @@ class UserRepository extends BaseRepository<User> {
 
     async findAllCandidatesForCSV(): Promise<User[]>{
         const users = await this.model.findAll({
-            attributes: ['fullName','email', 'phoneNo', 'id', 'graduationYear'],
+            attributes: ['fullName','email', 'phoneNo', 'graduationYear'],
             where: {
                 deletedAt: {
                     [Op.eq]: null
