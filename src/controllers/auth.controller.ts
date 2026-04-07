@@ -28,7 +28,7 @@ async function registerHandler(req: Request, res: Response, next: NextFunction) 
             error: {}
         });
     } catch (error) {
-        
+        logger.error('auth.controller/registerHandler ', {error});
         next(error);
     }
 }
