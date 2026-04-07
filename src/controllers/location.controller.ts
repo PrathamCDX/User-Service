@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import logger from '../configs/logger.config';
 import CityRepository from '../repository/city.repository';
 import CountryRepository from '../repository/country.repository';
 import StateRepository from '../repository/state.repository';
@@ -43,7 +42,6 @@ async function createLocation (req: AuthRequest, res: Response, next: NextFuncti
         }
 
     } catch (error) {
-        logger.error('location.controller/createLocation ', {error});
         next(error);
     }
 }
@@ -59,7 +57,6 @@ async function getLocation(req: Request, res: Response, next: NextFunction){
             error: {}
         });
     } catch (error) {
-        logger.error('location.controller/getLocation ', {error});
         next(error);
     }
 }

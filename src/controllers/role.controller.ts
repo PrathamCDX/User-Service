@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import logger from '../configs/logger.config';
 import RoleRepository from '../repository/role.repository';
 import UserRepository from '../repository/user.repository';
 import RoleService from '../services/role.service';
@@ -32,7 +31,6 @@ async function createRoles(req: AuthRequest , res: Response, next: NextFunction)
         });
 
     } catch (error) {
-        logger.error('role.controller/createRoles ', {error});
         next(error);
     }
 }
@@ -54,7 +52,6 @@ async function getRoles(req: Request , res: Response, next: NextFunction){
         });
 
     } catch (error) {
-        logger.error('role.controller/getRoles ', {error});
         next(error);
     }
 }
@@ -80,7 +77,6 @@ async function deleteRoles(req: Request , res: Response, next: NextFunction){
         
 
     } catch (error) {
-        logger.error('role.controller/deleteRoles ', {error});
         next(error);
     }
 }
@@ -105,7 +101,6 @@ async function updateRoles(req: Request , res: Response, next: NextFunction){
             error: {}
         });
     } catch (error) {
-        logger.error('role.controller/updateRoles ', {error});
         next(error);
     }
 }
@@ -121,7 +116,6 @@ async function getRoleByNameHandler(req: Request , res: Response, next: NextFunc
             error: {}
         });
     } catch (error) {
-        logger.error('role.controller/getRoleByNameHandler ', {error});
         next(error);
     }
 }
@@ -137,7 +131,6 @@ async function getUserRolesById(req: Request , res: Response, next: NextFunction
             error: {}
         });
     } catch (error) {
-        logger.error('role.controller/getUserRolesById ', {error});
         next(error);
     }
 }

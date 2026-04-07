@@ -44,6 +44,7 @@ class UserService {
     async createService(userData: RegisterUserDto) {
         const checkUser = await this.userRepository.findByEmail(userData.email);
         if (checkUser) {
+            logger.error('User already registered');
             throw new BadRequestError('User already registered');
         }
         const roles = await this.roleRepository.getRoles('jobseeker');
@@ -63,7 +64,7 @@ class UserService {
 
         } catch (error){
             await transaction.rollback();
-            logger.error('Something went wrong ', {error});
+            logger.error('Error while creating user ', {error});
             throw new InternalServerError('Error while creating user ');
         }
         
@@ -73,13 +74,15 @@ class UserService {
         const checkUser = await this.userRepository.findByEmail(userData.email);
 
         if (!checkUser) {
+            logger.error('User not found', userData.email);
             throw new NotFoundError('User not found');
         }
         
         const verified = await checkPassword(userData.password , checkUser.password);
 
         if(!verified) {
-            throw new BadRequestError('Incorrect password');
+            logger.error('Incorrect credentials', userData.email);
+            throw new BadRequestError('Incorrect credentials');
         }
 
         const jwtToken = createToken({id: checkUser.id, email: checkUser.email});
@@ -91,10 +94,12 @@ class UserService {
     
         const roleNames = userRoles.roles?.map((role) => role.name);
         if(!roleNames) {
+            logger.error('No roles found');
             throw new NotFoundError('No roles found ');
         }
             
         if(!roleNames.includes('admin')){
+            logger.error('Not an admin');
             throw new UnauthorizedError('Not an admin');
         }
 
@@ -118,6 +123,7 @@ class UserService {
     async findByIdService(id: number) {
         const user = await this.userRepository.findById(id);
         if (!user) {
+            logger.error('User not found');
             throw new NotFoundError('User not found');
         }
         return user;
@@ -138,9 +144,14 @@ class UserService {
         const userRoles = await this.userRepository.getUserRolesById(userId);
 
         const roleNames = userRoles.roles?.map(r => r.name);
-        if (!roleNames) throw new NotFoundError('No roles found');
-        if (!roleNames.includes('admin'))
+        if (!roleNames) {
+            logger.error('No roles found');
+            throw new NotFoundError('No roles found');
+        }
+        if (!roleNames.includes('admin')) {
+            logger.error('Not an admin');
             throw new UnauthorizedError('Not an admin');
+        }
 
         const raw = await this.userRepository.findAllCandidatesForCSV({details});
 
@@ -167,8 +178,10 @@ class UserService {
             if (error instanceof TokenExpiredError) {
                 return new UnauthorizedError('Session expired. Please login again.');
             } else if (error instanceof JsonWebTokenError) {
+                logger.error('Invalid token');
                 throw new UnauthorizedError('Invalid token');
             } else {
+                logger.error('Verification of token failed');
                 throw new UnauthorizedError('Verification of token failed');
             }
       

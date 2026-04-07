@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import logger from '../configs/logger.config';
 import CityRepository from '../repository/city.repository';
 import CityService from '../services/city.service';
 
@@ -21,7 +20,6 @@ async function getCityById(req: Request, res: Response, next: NextFunction){
             error: {}
         });
     } catch (error) {
-        logger.error('city.controller/getCityById ', {error});
         next(error);
     }
 }
@@ -42,7 +40,6 @@ async function getCity(req: Request, res: Response, next: NextFunction){
             error: {}
         });
     } catch (error) {
-        logger.error('city.controller/getCity ', {error});
         next(error);
     }
 

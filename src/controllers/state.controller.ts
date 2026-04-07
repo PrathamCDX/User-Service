@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 
-import logger from '../configs/logger.config';
 import StateRepository from '../repository/state.repository';
 import StateService from '../services/state.service';
 
@@ -22,7 +21,6 @@ async function getStateHandler(req: Request, res: Response, next: NextFunction){
             error: {}
         });
     } catch (error) {
-        logger.error('state.controller/getStateHandler ', {error});
         next(error);
     }
 

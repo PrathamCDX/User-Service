@@ -1,7 +1,6 @@
 import { NextFunction,  Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import logger from '../configs/logger.config';
 import { CreateUserSkillDto, DeleteUserSkillDto } from '../dtos/userSkill.dto';
 import SkillRepository from '../repository/skill.repository';
 import UserRepository from '../repository/user.repository';
@@ -32,7 +31,6 @@ async function createUserSkillHandler(req: AuthRequest, res: Response, next: Nex
             error: {}
         });
     } catch (error) {
-        logger.error('userSkill.controller/createUserSkillHandler ', {error});
         next(error);
     }
 }
@@ -55,7 +53,6 @@ async function deleteUserSkillHandler(req: AuthRequest, res: Response, next: Nex
             error: {}
         });
     } catch (error) {
-        logger.error('userSkill.controller/deleteUserSkillHandler ', {error});
         next(error);
     }
 }
