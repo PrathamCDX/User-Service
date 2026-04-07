@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+import logger from '../configs/logger.config';
 import RoleRepository from '../repository/role.repository';
 import UserRepository from '../repository/user.repository';
 import UserProfileRepository from '../repository/userProfile.repository';
@@ -32,6 +33,7 @@ async function getUsersByName(req: Request, res: Response, next: NextFunction){
             error: {}
         });
     }catch(error){
+        logger.error('user.controller/getUsersByName ', {error});
         next(error);
     }
 }
@@ -48,6 +50,7 @@ async function getUsersByEmail(req: Request, res: Response, next: NextFunction){
             error: {}
         });
     }catch(error){
+        logger.error('user.controller/getUsersByEmail ', {error});
         next(error);
     }
 }
@@ -90,6 +93,7 @@ async function getSelfDetails(req: AuthRequest, res: Response, next: NextFunctio
         });
 
     } catch (error) {
+        logger.error('user.controller/getSelfDetails ', {error});
         next(error); 
     }
     
@@ -113,6 +117,7 @@ async function updateUserProfileHandler(req: Request, res: Response, next: NextF
             error: {}
         });
     } catch (error) {
+        logger.error('user.controller/updateUserProfileHandler ', {error});
         next(error);
     }
 }
@@ -136,6 +141,7 @@ async function updateUserHandler(req: Request, res: Response, next: NextFunction
             error: {}
         });
     } catch (error) {
+        logger.error('user.controller/updateUserHandler ', {error});
         next(error);
     }
 }
@@ -151,6 +157,7 @@ async function getUserDetailsById(req: AuthRequest, res: Response, next: NextFun
             error: {}
         });     
     } catch (error) {
+        logger.error('user.controller/getUserDetailsById ', {error});
         next(error);
     }
 }
@@ -170,6 +177,7 @@ async function getAllUsers(req: AuthRequest, res: Response, next: NextFunction){
             error: {}
         });
     } catch (error) {
+        logger.error('user.controller/getAllUsers ', {error});
         next(error);
     }
 }

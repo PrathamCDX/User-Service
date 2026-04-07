@@ -1,7 +1,6 @@
 import { Transaction } from 'sequelize';
 
 import logger from '../configs/logger.config';
-// import logger from '../configs/logger.config';
 import sequelize from '../db/models/sequelize';
 import { CreateLocationDto } from '../dtos/location.dto';
 import CityRepository from '../repository/city.repository';
@@ -65,8 +64,8 @@ class LocationService {
             return data ;
             
         } catch (error) {
+            logger.error('createLocationService transaction',error);
             await transaction.rollback();
-            logger.error(error);
             throw error;  
         }
 

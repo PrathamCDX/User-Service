@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+import logger from '../configs/logger.config';
 import { LoginUserDto, RegisterUserDto } from '../dtos/user.dto';
 import RoleRepository from '../repository/role.repository';
 import UserRepository from '../repository/user.repository';
@@ -27,6 +28,7 @@ async function registerHandler(req: Request, res: Response, next: NextFunction) 
             error: {}
         });
     } catch (error) {
+        
         next(error);
     }
 }
@@ -42,6 +44,7 @@ async function loginHandler(req: Request, res: Response, next: NextFunction) {
 
         });
     }catch(error){
+        logger.error('auth.controller/Login handler ', {error});
         next(error);
     }
 }

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+import logger from '../configs/logger.config';
 import { DeleteSkillDto, UpdateSkillDto } from '../dtos/skill.dto';
 import SkillRepository from '../repository/skill.repository';
 import UserRepository from '../repository/user.repository';
@@ -24,6 +25,7 @@ async function getSkillHandler(req: Request, res: Response, next: NextFunction){
             error: {}
         });
     } catch (error) {
+        logger.error('skill.controller/getSkillHandler ', {error});
         next(error);
     }
 
@@ -48,6 +50,7 @@ async function createSkillHandler(req: AuthRequest, res: Response, next: NextFun
             error: {}
         });
     } catch (error) {
+        logger.error('skill.controller/createSkillHandler ', {error});
         next(error);
         
     }
@@ -74,6 +77,7 @@ async function updateSkillHandler(req: Request, res: Response, next: NextFunctio
             error: {}
         });
     } catch (error) {
+        logger.error('skill.controller/updateSkillHandler ', {error});
         next(error);
     }
 
@@ -101,6 +105,7 @@ async function deleteSkillHandler(req: Request, res: Response, next: NextFunctio
             });
         }
     } catch (error) {
+        logger.error('skill.controller/deleteSkillHandler ', {error});
         next(error);
     }
 }
@@ -116,6 +121,7 @@ async function getSkillByIdHandler(req: Request, res: Response, next: NextFuncti
             error: {}
         });
     } catch (error) {
+        logger.error('skill.controller/getSkillByIdHandler ', {error});
         next(error);
     }
 }
